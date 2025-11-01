@@ -12,5 +12,10 @@
         {
             TextLabel.Text = e.NewTextValue;
         }
+
+        private void OnEntryTextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextLabel.Text = TextEntry.Text;
+        }
     }
 }

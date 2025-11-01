@@ -17,8 +17,8 @@
                 <Entry 
                     x:Name="TextEntry"
                     TextColor="Black"
-                       Background="#FFFFF0"
-                       TextChanged="OnEntry_TextChanged" />
+                    Background="#FFFFF0"
+                    TextChanged="OnEntry_TextChanged" />
                 
             </VerticalStackLayout>
        
@@ -34,7 +34,7 @@
             HorizontalOptions="Center"
             FontAttributes="Italic"
             x:Name="TextLabel"
-            Text="Aqui se muestra el texto" />
+            Text="{Binding Source={x:Reference TextEntry}, Path=Text}"/>
 
     </VerticalStackLayout>
 
