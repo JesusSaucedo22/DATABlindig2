@@ -5,17 +5,8 @@
         public MainPage()
         {
             InitializeComponent();
-            TextLabel.Text = string.Empty;
         }
 
-        private void OnEntry_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            TextLabel.Text = e.NewTextValue;
-        }
-
-        private void OnEntryTextChanged(object sender, TextChangedEventArgs e)
-        {
-            TextLabel.Text = TextEntry.Text;
-        }
+       
     }
 }
