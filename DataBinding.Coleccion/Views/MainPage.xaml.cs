@@ -1,132 +1,147 @@
-//using static Android.Webkit.WebStorage;
-using System.Collections.Generic;
+using DataBinding.Coleccion.Models;
 using System.Collections.ObjectModel;
-//using static Android.Webkit.WebStorage;
-namespace DataBinding.Coleccion.NewFolder1;
+
+namespace DataBinding.Coleccion.Views;
 
 public partial class MainPage : ContentPage
 {
+    private OrigenDelPaquete? _origenSeleccionado;
+    private string _nombreDelOrigen = string.Empty;
+    private string _rutaDelOrigen = string.Empty;
 
-    public ObservableCollection<OrigenDePaquete> Origenes { get; }
+    public ObservableCollection<OrigenDelPaquete> Origenes { get; }
+
+    public OrigenDelPaquete? OrigenSeleccionado
+    {
+        get => _origenSeleccionado;
+        set
+        {
+            if (_origenSeleccionado != value)
+            {
+                _origenSeleccionado = value;
+                OnPropertyChanged(nameof(OrigenSeleccionado));
+            }
+        }
+    }
+
+    public string NombreDelOrigen
+    {
+        get => _nombreDelOrigen;
+        set
+        {
+            if (_nombreDelOrigen != value)
+            {
+                _nombreDelOrigen = value;
+                OnPropertyChanged(nameof(NombreDelOrigen));
+            }
+        }
+    }
+
+    public string RutaDelOrigen
+    {
+        get => _rutaDelOrigen;
+        set
+        {
+            if (_rutaDelOrigen != value)
+            {
+                _rutaDelOrigen = value;
+                OnPropertyChanged(nameof(RutaDelOrigen));
+            }
+        }
+    }
 
     public MainPage()
     {
-        
         InitializeComponent();
-        OrigenDePaquete? origenSeleccionado = null;                                                                                                               
-       Origenes = new ObservableCollection<OrigenDePaquete>();
-        //_origenes = new List<OrigenDePaquete>();
+        Origenes = new ObservableCollection<OrigenDelPaquete>();
         CargarDatos();
-        OrigenesListView.ItemsSource = Origenes;
+        BindingContext = this;
 
         if (Origenes.Count > 0)
         {
-            origenSeleccionado = Origenes[0];
+            OrigenSeleccionado = Origenes[0];
         }
-        BindingContext = this;
-        //OrigenesListView.ItemsSource = Origenes;
-        //OrigenesListView.SelectedItem = origenSeleccionado;
+        else
+        {
+            OrigenSeleccionado = null;
+        }
     }
 
     private void CargarDatos()
     {
-        Origenes.Add(new OrigenDePaquete
+        Origenes.Add(new OrigenDelPaquete
         {
             Nombre = "nuget.org",
             Origen = "https://api.nuget.org/v3/index.json",
-            EstaHabilitado = true,
+            EstaHabilitado = true
         });
 
-        Origenes.Add(new OrigenDePaquete
+        Origenes.Add(new OrigenDelPaquete
         {
-            Nombre = "Microsoft visual Studio offiline Packages",
-            Origen = @"c:\\Program Files(x86)\\Microsoft SDKs\\NuGetPackages",
-            EstaHabilitado = false,
+            Nombre = "Microsoft Visual",
+            Origen = "C:\\Program Files (x86)\\Microsoft SDks\\NuGetPackages\\",
+            EstaHabilitado = true
         });
     }
 
-    private void OnAgregarButtonClicked(object sender, EventArgs e)
+    private void OnAddButtonClicked(object sender, EventArgs e)
     {
-        var origen = new OrigenDePaquete
+        var origen = new OrigenDelPaquete
         {
-            Nombre = "Origen del paquete",
-            Origen = "URL o ruta del origen del paquete",
-            EstaHabilitado = false,
+            Nombre = "Nombre del origen del paquete",
+            Origen = "Url o ruta del origen del paquete",
+            EstaHabilitado = false
         };
 
         Origenes.Add(origen);
-        //OrigenesListView.ItemsSource = null;
-        //OrigenesListView.ItemsSource = Origenes;
-        //OrigenesListView.SelectedItem = origen;
+        OrigenSeleccionado = origen;
     }
 
-    private void OnDeleteButtonClicked(object sender, EventArgs e)
+    private void OnRemoveButtonClicked(object sender, EventArgs e)
     {
-        //OrigenDePaquete seleccionado =
-          //  (OrigenDePaquete)OrigenesListView.SelectedItem;
-          OrigenDePaquete seleccionado = null;
-
-        if (seleccionado != null)
+        if (OrigenSeleccionado != null)
         {
-            var indice = Origenes.IndexOf(seleccionado);
-            OrigenDePaquete? nuevoSeleccionado;         //el signo ? = asepta null
-            if (Origenes.Count > 1)
+            var indice = Origenes.IndexOf(OrigenSeleccionado);
+            OrigenDelPaquete? nuevoSeleccionado = null;
+
+            if (indice < Origenes.Count - 1)
             {
-                //hay mas de un elemento
-                
-                if (indice < Origenes.Count - 1)
-                {
-                    //El elemento seleccionado no es el ultimo
-                    nuevoSeleccionado = Origenes[indice + 1];
-                }
-                else
-                {
-                    //El elemento seleccionado es el ultimo 
-                    nuevoSeleccionado = Origenes[indice - 1];
-                }
+                nuevoSeleccionado = Origenes[indice + 1];
             }
-            else
+            else if (Origenes.Count > 1)
             {
-                //Solo hay un elemento
-                nuevoSeleccionado = null;
+                nuevoSeleccionado = Origenes[Origenes.Count - 2];
             }
 
-            Origenes.Remove(seleccionado);
-            //OrigenesListView.ItemsSource = null;
-            //OrigenesListView.ItemsSource = _origenes;
-            //OrigenesListView.SelectedItem = nuevoSeleccionado;
-
-            //ActualizarCamposDeEntrada();
+            Origenes.Remove(OrigenSeleccionado);
+            OrigenSeleccionado = nuevoSeleccionado;
         }
     }
 
-    private void OrigenesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void OnActualizarButtonClicked(object sender, EventArgs e)
     {
-        //OrigenDePaquete origenSeleccionado =
-         //   (OrigenDePaquete)OrigenesListView.SelectedItem;
-        //if (origenSeleccionado != null)
-        //{
-         //   NombreEntry.Text = origenSeleccionado.Nombre;
-         //   OrigenEntry.Text = origenSeleccionado.Origen;
-       // }
-        //else
-       // {
-         //   NombreEntry.Text = string.Empty;
-         //   OrigenEntry.Text = string.Empty;
-        //}
+        if (OrigenSeleccionado != null)
+        {
+            if (!OrigenSeleccionado.Nombre.Equals(NombreDelOrigen) ||
+                !OrigenSeleccionado.Origen.Equals(RutaDelOrigen))
+            {
+                OrigenSeleccionado.Nombre = NombreDelOrigen;
+                OrigenSeleccionado.Origen = RutaDelOrigen;
+            }
+        }
     }
 
-    private void OnActualizar(object sender, EventArgs e)
+    private void OriginesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        //OrigenDePaquete origenSeleccionado =
-         //   OrigenesListView.SelectedItem as OrigenDePaquete;
-       // if (origenSeleccionado != null)
-       // {
-       //     origenSeleccionado.Nombre = NombreEntry.Text;
-       //     origenSeleccionado.Origen = OrigenEntry.Text;
-        //    OrigenesListView.ItemsSource = null;
-         //   OrigenesListView.ItemsSource = _origenes;
-         //   OrigenesListView.SelectedItem = origenSeleccionado;
-        //}
+        if (OrigenSeleccionado != null)
+        {
+            NombreDelOrigen = OrigenSeleccionado.Nombre;
+            RutaDelOrigen = OrigenSeleccionado.Origen;
+        }
+        else
+        {
+            NombreDelOrigen = string.Empty;
+            RutaDelOrigen = string.Empty;
+        }
     }
 }

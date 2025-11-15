@@ -5,10 +5,14 @@
              x:Class="DataBinding.Coleccion.App">
     <Application.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
+            <!-- Elimina temporalmente las referencias -->
+            <!-- <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
-            </ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary.MergedDictionaries> -->
+
+            <!-- Agrega recursos directamente aquí -->
+            <Color x:Key="PrimaryColor">#512BD4</Color>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
